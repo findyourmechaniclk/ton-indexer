@@ -32,7 +32,7 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-n
 
       - name: Install dependencies
         working-directory: indexer
@@ -60,6 +60,12 @@ jobs:
     - uses: actions/setup-go@v5
       with:
         go-version: '>=1.23.0'
+
+    - name: Cache Go modules
+      uses: actions/cache@v4
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
     - name: Install system libraries
       run: |
